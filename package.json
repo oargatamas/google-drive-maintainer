@@ -1,0 +1,15 @@
+{
+  "name": "google-drive-maintainer",
+  "version": "1.0.0",
+  "description": "App Script project for creating automated backup from the dedicated folder ( including subfolders)",
+  "scripts": {
+    "start-dev": "clasp push --watch",
+    "deploy": ""
+  },
+  "author": "Tamás Dániel Oarga ( oarga.tamas@gmail.com )",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/google-apps-script": "^1.0.86",
+    "clasp": "^1.0.0"
+  }
+}
