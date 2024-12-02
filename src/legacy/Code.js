@@ -2,21 +2,14 @@
   console.time("scan");
   console.log("Start scan process");
 
-  const foldersToBackup = [
-    "1PznvZiHch_GaAqj8lGYawjCUMrbhNlgD", // "BDF SZINKRON MAPPA"
-    "1powhwRx9j-DcJPjnXccEWmKF2rRu4bT1", // "Bodrogi Ferenc mappája"
-    "12WZMaMtHajCzDNokQWJLs07oQdg0EXMB", // "MVM Optimum"
-    "1tB0NltYDiPOzg39jLIhzgSj85BomoVr5", // "Medev Solar"
-  ]
- 
   const options = {
     iterationTokenKey : "scan-root-folders",
-    iterator: () => foldersToBackup.map(folder => DriveApp.getFolderById(folder).getFolders()),
+    iterator: () => ROOT_FOLDERS.map(folder => DriveApp.getFolderById(folder).getFolders()),
     maxTime: getExecutionLimit(),
     enableSubFolderIteration : true,
   };
   
-  execLimitSafeIterator(options,(item)=> {
+  exec_limit_safe_iterator(options,(item)=> {
     console.log("Processing folder of " + item.getName() + " Id: " + item.getId());
     if(item.getName() !== ".backup"){
       console.log("Folder is not a backup folder. Trying to create backup folder inside");
@@ -38,7 +31,7 @@ function backup(){
     maxTime: getExecutionLimit(),
   };
   
-  execLimitSafeIterator(options,(item)=> {
+  exec_limit_safe_iterator(options,(item)=> {
     const parents = item.getParents()
     if(parents.hasNext()){
       const backupParentFolder = parents.next(); 
@@ -64,7 +57,7 @@ function backupPermissionDoubleCheck(){
     maxTime: getExecutionLimit(),
   };
   
-  execLimitSafeIterator(options,(item)=> {
+  exec_limit_safe_iterator(options,(item)=> {
     console.log("Setting backup folder to private: " + item.getName() + " id: " + item.getId());
     item.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.NONE);
   });
@@ -93,7 +86,7 @@ function removePermission(){
     maxTime: getExecutionLimit(),
   };
 
-  execLimitSafeIterator(options,(item)=> {
+  exec_limit_safe_iterator(options,(item)=> {
     console.log("Removing access from : " + item.getName() + " id: " + item.getId());
     emailsToRemove.forEach(email => {
       try {
@@ -124,7 +117,7 @@ function resetFileSharingOptions(){
     useFileIterator: true,
   };
 
-  execLimitSafeIterator(options,(item)=> {
+  exec_limit_safe_iterator(options,(item)=> {
     console.log("Reset sharing details of : " + item.getName() + " id: " + item.getId());
     console.log("Owner is : " + item.getOwner().getEmail() + " mimeType: " + item.getMimeType());
     if(item.getMimeType() === "application/vnd.google-apps.shortcut"){
@@ -149,7 +142,7 @@ function resetFolderSharingOptions(){
     maxTime: getExecutionLimit(),
   };
 
-  execLimitSafeIterator(options,(item)=> {
+  exec_limit_safe_iterator(options,(item)=> {
     console.log("Reset sharing details of : " + item.getName() + " id: " + item.getId());
     console.log("Owner is : " + item.getOwner().getEmail());
     item.setSharing(DriveApp.Access.ANYONE, DriveApp.Permission.NONE);

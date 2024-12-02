@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "App Script project for creating automated backup from the dedicated folder ( including subfolders)",
   "scripts": {
+    "init": "clasp login",
     "start-dev": "clasp push --watch",
     "deploy": ""
   },

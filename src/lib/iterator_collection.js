@@ -1,5 +1,5 @@
 // V8 runtime
-class IteratorCollection{
+class Iterator_collection {
 
   constructor(tokens, type) {
     this.iterators = tokens.map(token => type.toUpperCase() === 'FOLDER'? DriveApp.continueFolderIterator(token) : DriveApp.continueFileIterator(token));
@@ -36,18 +36,18 @@ class IteratorCollection{
   }
 
   static folderIterator(){
-    return new IteratorCollection([],"FOLDER");
+    return new Iterator_collection([],"FOLDER");
   }
 
   static fileIterator(){
-    return new IteratorCollection([],"FILE");
+    return new Iterator_collection([],"FILE");
   }
 
   static continueFolderIterator(token){
-    return new IteratorCollection(JSON.parse(token), "FOLDER");
+    return new Iterator_collection(JSON.parse(token), "FOLDER");
   }
 
   static continueFileIterator(token){
-    return new IteratorCollection(JSON.parse(token), "FILE");
+    return new Iterator_collection(JSON.parse(token), "FILE");
   }
 }

@@ -1,4 +1,4 @@
-function test(){
+function tests(){
   const item = DriveApp.getFolderById("1uflvEkzz7isM2ZdbeGCxcfboFZfg9xr9");
 
   item.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.NONE);
@@ -21,7 +21,7 @@ function testSearchQuery() {
 
 function testExecLimitSafeIterator(){
   const options = {
-    iterationTokenKey : "test-long-run-iteration",
+    iterationTokenKey : "tests-long-run-iteration",
     iterator: () => DriveApp.getFolderById("1PznvZiHch_GaAqj8lGYawjCUMrbhNlgD").getFolders(),
     maxTime: 1000*5*1, // 10 sec;
   };
@@ -32,10 +32,10 @@ function testExecLimitSafeIterator(){
     console.log("iteration run: " + count + " item name: " + item.getName() + " Id: " + item.getId());
   };
 
-  execLimitSafeIterator(options, processor);
+  exec_limit_safe_iterator(options, processor);
   console.log("Iteration interrupted by the timeout. Iteration count: " + count);
-  execLimitSafeIterator(options, processor);
-  console.log("Iteration test finished: " + count);
+  exec_limit_safe_iterator(options, processor);
+  console.log("Iteration tests finished: " + count);
 }
 
 

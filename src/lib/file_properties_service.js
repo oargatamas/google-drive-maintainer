@@ -1,15 +1,15 @@
 // V8 runtime
-class FilePropertiesService{
+class File_properties_service {
 
   constructor() {
   }
 
   static getFileProperties(){
-    return new FilePropertiesService();
+    return new File_properties_service();
   }
 
   getFile(propKey){
-    const folder = DriveApp.getFolderById('1TjDiBOq8lZhYzUz9UtiDNqSO9pX9_X-1');
+    const folder = DriveApp.getFolderById(DRIVE_CACHE_FOLDER);
     const fileName = propKey + '.json';
     const files = folder.getFilesByName(fileName);
 
