@@ -2,7 +2,7 @@ function getFolder(parentFolder, folderName) {
     const folders = parentFolder.getFolders();
     while (folders.hasNext()) {
         const folder = folders.next();
-        if (folderName == folder.getName()) {
+        if (folderName === folder.getName()) {
             //console.log("Found folder of '" + folderName + "' in '" + parentFolder.getName()+"' id: " + folder.getId());
             return folder;
         }
@@ -14,14 +14,14 @@ function getFolder(parentFolder, folderName) {
     return newFolder;
 }
 
-function getFolderParents(folder) {
+function getParents(driveItem) {
     const parents = [];
-    const mapper = folder => ({
-        id: folder.getId(),
-        name: folder.getName(),
+    const mapper = item => ({
+        id: item.getId(),
+        name: item.getName(),
     });
 
-    let folders = folder.getParents();
+    let folders = driveItem.getParents();
     while (folders.hasNext()) {
         let folder = folders.next();
         parents.push(mapper(folder));

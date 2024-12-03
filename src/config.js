@@ -8,4 +8,7 @@ ROOT_FOLDERS = [
     "1tB0NltYDiPOzg39jLIhzgSj85BomoVr5", // "Medev Solar"
 ]
 
-FILE_REGISTRY_SHEET= '';
+FILE_REGISTRY_ID= '';
+SHEET_FILES = '';
+SHEET_FOLDERS = '';
+SHEET_SCHEDULED_FILES = '';
