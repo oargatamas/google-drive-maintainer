@@ -2,12 +2,9 @@ function collect_folders() {
     console.time("collect_folders");
     console.log("Start scan files process");
 
-    const options = {
-        iterationTokenKey: "scan-root-files",
-        iterator: () => DriveApp.getFolders(),
-        maxTime: EXECUTION_LIMIT,
-        useFileIterator: true,
-    };
+    const options = driveFolderIteratorOptions({
+        iterationTokenKey: "collect_folders",
+    });
 
     const sheet = openRegistrySheet(SHEET_FOLDERS);
 
@@ -30,14 +27,11 @@ function collect_files() {
     console.time("collect_files");
     console.log("Start scan files process");
 
-    const options = {
-        iterationTokenKey: "scan-root-files",
-        iterator: () => null,
-        maxTime: EXECUTION_LIMIT,
-        useFileIterator: true,
-    };
-
     const sheet = openRegistrySheet(SHEET_FILES);
+
+    const options = sheetItemIteratorOptions(sheet,{
+        iterationTokenKey: "collect_files",
+    });
 
     exec_limit_safe_iterator(options, (folder_entry) => {
         // Check if the file is in the registry or not
@@ -47,45 +41,52 @@ function collect_files() {
         if(!getFileInfo(sheet, file)){
             registerItem(sheet, mapFile(file));
         }
-        //Todo introduce an an iteration state counter
-        //Todo also write something what can reset the counter if hit the end of list
     });
 
     console.timeEnd("collect_files");
 }
 
 function backup_files() {
-    console.time("collect_files");
+    console.time("backup_files");
     console.log("Start scan files process");
 
-    const options = {
-        iterationTokenKey: "scan-root-files",
-        iterator: () => null, // return an iterator which can fetch a predefined google sheet ( will be a mat view with the folders should be checked... )
-        maxTime: EXECUTION_LIMIT,
-        useFileIterator: true,
-    };
+    const files_sheet = openRegistrySheet(SHEET_FILES);
+    const scheduled_sheet = openRegistrySheet(SHEET_SCHEDULED_FILES);
+    const trash = DriveApp.getFolderById(TRASH_FOLDER);
 
-    exec_limit_safe_iterator(options, (reg_entry) => {
-        // Check if the file archived
-        // If not then archive it and switch the archived flag in the original FileReqistry
+    const options = sheetItemIteratorOptions(scheduled_sheet,{
+        iterationTokenKey: "backup_files",
     });
 
-    console.timeEnd("collect_files");
+    exec_limit_safe_iterator(options, (reg_entry) => {
+        const file = DriveApp.getFileById(reg_entry[0]);
+        const folder = file.getParents().next();
+        const backupFolder = getFolder(folder, '.backup');
+
+        backupDriveFile(file, backupFolder, trash);
+
+        const result = searchInSheet(files_sheet, file.getId());
+        const file_info = result.getValues();
+        file_info[0][4] = true;
+        file_info[0][5] = (new Date()).toDateString();
+        result.setValues(file_info);
+    });
+
+    console.timeEnd("backup_files");
 }
 
 function collect_backup_folders() {
     console.time("collect_backup_folders");
     console.log("Start scan files process");
 
-    const options = {
-        iterationTokenKey: "scan-root-files",
-        iterator: () => DriveApp.getFoldersByName(".backup"),
-        maxTime: EXECUTION_LIMIT,
-        useFileIterator: true,
-    };
+    const options = driveFolderIteratorOptions({
+        iterationTokenKey: "collect_backup_folders",
+        iterator: () => DriveApp.getFoldersByName(".backup")
+    });
 
     exec_limit_safe_iterator(options, (folder) => {
         // make sure that all the .backup folders have private access
+        makeItemPrivate(folder);
     });
 
     console.timeEnd("collect_backup_folders");

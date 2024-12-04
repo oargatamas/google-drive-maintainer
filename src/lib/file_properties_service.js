@@ -1,11 +1,11 @@
 // V8 runtime
-class File_properties_service {
+class FilePropertiesService {
 
   constructor() {
   }
 
   static getFileProperties(){
-    return new File_properties_service();
+    return new FilePropertiesService();
   }
 
   getFile(propKey){
