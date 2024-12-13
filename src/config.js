@@ -3,16 +3,20 @@ DRIVE_CACHE_FOLDER = '1TjDiBOq8lZhYzUz9UtiDNqSO9pX9_X-1';
 TRASH_FOLDER = "1EvJWH9jVwOTwNdusxirbkgOXXpdmAA69";
 
 ROOT_FOLDERS = [
-    "1PznvZiHch_GaAqj8lGYawjCUMrbhNlgD", // "BDF SZINKRON MAPPA"
-    "1powhwRx9j-DcJPjnXccEWmKF2rRu4bT1", // "Bodrogi Ferenc mappája"
-    "12WZMaMtHajCzDNokQWJLs07oQdg0EXMB", // "MVM Optimum"
-    "1tB0NltYDiPOzg39jLIhzgSj85BomoVr5", // "Medev Solar"
+    "1hrL5JrApJpMVr2h7GnkiAFko7Rv60gVX"
+    //"1PznvZiHch_GaAqj8lGYawjCUMrbhNlgD", // "BDF SZINKRON MAPPA"
+    //"1powhwRx9j-DcJPjnXccEWmKF2rRu4bT1", // "Bodrogi Ferenc mappája"
+    //"12WZMaMtHajCzDNokQWJLs07oQdg0EXMB", // "MVM Optimum"
+    //"1tB0NltYDiPOzg39jLIhzgSj85BomoVr5", // "Medev Solar"
 ];
 
-FILE_REGISTRY_ID = '';
+FILE_REGISTRY_ID = '1PfWaoRbbjPwWB9rcqHk6Fp7pQoWQjlDOWIz7HdU_4l0';
 SHEET_FILES = 'FILES';
 SHEET_FOLDERS = 'FOLDERS';
 SHEET_SCHEDULED_FILES = 'SCHEDULED_FILES';
+
+TRUE=1
+FALSE=0
 
 
 const iteratorOptionsBase = {
@@ -23,7 +27,7 @@ const iteratorOptionsBase = {
 const driveFolderIteratorOptions = (options) => {
     return Object.assign({}, iteratorOptionsBase, {
         mode: "DriveFile",
-        iterator: () => DriveApp.getFolders(),
+        iterator: () => DriveApp.searchFolders("title contains 'SubFolder'"),
         continueIterator: (token) => DriveApp.continueFolderIterator(token),
     }, options)
 }

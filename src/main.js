@@ -11,12 +11,14 @@ function collect_folders() {
     exec_limit_safe_iterator(options, (folder) => {
         // Check parents chain if it should be registered or not
         const shouldRegister = getParents(folder)
-            .map(parent =>parent.getId())
+            .map(parent => parent.id)
             .some(parentId => ROOT_FOLDERS.includes(parentId));
 
+        console.log(shouldRegister);
         if(shouldRegister && !getFolderInfo(sheet, folder)){
             // Add folder to a staging sheet
             registerItem(sheet, mapFolder(folder));
+        }else{
         }
     });
 
@@ -27,19 +29,23 @@ function collect_files() {
     console.time("collect_files");
     console.log("Start scan files process");
 
-    const sheet = openRegistrySheet(SHEET_FILES);
+    const folders_sheet = openRegistrySheet(SHEET_FOLDERS);
+    const files_sheet = openRegistrySheet(SHEET_FILES);
 
-    const options = sheetItemIteratorOptions(sheet,{
+    const options = sheetItemIteratorOptions(folders_sheet,{
         iterationTokenKey: "collect_files",
     });
 
     exec_limit_safe_iterator(options, (folder_entry) => {
-        // Check if the file is in the registry or not
-        // If not then paste it with NOT_ARCHIVED flag
-        const file = DriveApp.getFileById(folder_entry[0]);
-
-        if(!getFileInfo(sheet, file)){
-            registerItem(sheet, mapFile(file));
+        const files = DriveApp.getFolderById(folder_entry[0]).getFiles();
+        while(files.hasNext()){
+            const file = files.next();
+            const folder = file.getParents().next();
+            // Check if the file is in the registry or not
+            // If not then paste it with NOT_ARCHIVED flag
+            if(!getFileInfo(files_sheet, file)){
+                registerItem(files_sheet, mapFile(file, folder));
+            }
         }
     });
 
@@ -66,9 +72,11 @@ function backup_files() {
         backupDriveFile(file, backupFolder, trash);
 
         const result = searchInSheet(files_sheet, file.getId());
+        console.log(result.getValues());
+
         const file_info = result.getValues();
-        file_info[0][4] = true;
-        file_info[0][5] = (new Date()).toDateString();
+        file_info[0][4] = TRUE;
+        file_info[0][5] = (new Date()).toLocaleString();
         result.setValues(file_info);
     });
 

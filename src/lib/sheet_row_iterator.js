@@ -1,19 +1,20 @@
 // V8 runtime
 class SheetRowIterator {
     constructor(dataSheet, position = '0') {
-        this.dataSheet = dataSheet;
+        this.data = dataSheet.getDataRange()
+            .getValues()
+            .filter(value => value[0] !== '');
         this.position = JSON.parse(position);
     }
 
     hasNext() {
-        return this.dataSheet.getLastRow() > this.position;
+        return this.data.length > this.position;
     }
 
     next() {
-        const nextRow = this.dataSheet.getRow(this.position)
-
+        const next_row = this.data[this.position];
         this.position++;
-        return nextRow.getValues();
+        return next_row;
     }
 
     getContinuationToken() {
