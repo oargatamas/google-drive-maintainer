@@ -14,8 +14,7 @@ function collect_folders() {
             .map(parent => parent.id)
             .some(parentId => ROOT_FOLDERS.includes(parentId));
 
-        console.log(shouldRegister);
-        if(shouldRegister && !getFolderInfo(sheet, folder)){
+        if(folder.getName() !== '.backup' && shouldRegister &&!getFolderInfo(sheet, folder)){
             // Add folder to a staging sheet
             registerItem(sheet, mapFolder(folder));
         }else{
@@ -31,13 +30,15 @@ function collect_files() {
 
     const folders_sheet = openRegistrySheet(SHEET_FOLDERS);
     const files_sheet = openRegistrySheet(SHEET_FILES);
+    const scheduled_folders_sheet = openRegistrySheet(SHEET_SCHEDULED_FOLDERS);
 
-    const options = sheetItemIteratorOptions(folders_sheet,{
+    const options = sheetItemIteratorOptions(scheduled_folders_sheet,{
         iterationTokenKey: "collect_files",
     });
 
     exec_limit_safe_iterator(options, (folder_entry) => {
-        const files = DriveApp.getFolderById(folder_entry[0]).getFiles();
+        const folder_id = folder_entry[0];
+        const files = DriveApp.getFolderById(folder_id).getFiles();
         while(files.hasNext()){
             const file = files.next();
             const folder = file.getParents().next();
@@ -47,6 +48,8 @@ function collect_files() {
                 registerItem(files_sheet, mapFile(file, folder));
             }
         }
+
+        logRecordTouch(folders_sheet, folder_id);
     });
 
     console.timeEnd("collect_files");
@@ -71,13 +74,7 @@ function backup_files() {
 
         backupDriveFile(file, backupFolder, trash);
 
-        const result = searchInSheet(files_sheet, file.getId());
-        console.log(result.getValues());
-
-        const file_info = result.getValues();
-        file_info[0][4] = TRUE;
-        file_info[0][5] = (new Date()).toLocaleString();
-        result.setValues(file_info);
+        logRecordTouch(files_sheet, file.getId());
     });
 
     console.timeEnd("backup_files");

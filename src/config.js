@@ -13,6 +13,7 @@ FILE_REGISTRY_ID = '1PfWaoRbbjPwWB9rcqHk6Fp7pQoWQjlDOWIz7HdU_4l0';
 SHEET_FILES = 'FILES';
 SHEET_FOLDERS = 'FOLDERS';
 SHEET_SCHEDULED_FILES = 'SCHEDULED_FILES';
+SHEET_SCHEDULED_FOLDERS = 'SCHEDULED_FOLDERS';
 
 TRUE=1
 FALSE=0
@@ -26,7 +27,7 @@ const iteratorOptionsBase = {
 const driveFolderIteratorOptions = (options) => {
     return Object.assign({}, iteratorOptionsBase, {
         mode: "DriveFile",
-        iterator: () => DriveApp.searchFolders("title contains 'SubFolder'"),
+        iterator: () => DriveApp.getFolders(),
         continueIterator: (token) => DriveApp.continueFolderIterator(token),
     }, options)
 }
