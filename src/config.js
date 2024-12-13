@@ -1,13 +1,12 @@
-EXECUTION_LIMIT = 1000 * 60 * 4.5; // Max safe time, 4.5 mins
+EXECUTION_LIMIT = 1000 * 60 * 4; // Max safe time, 4 minutes
 DRIVE_CACHE_FOLDER = '1TjDiBOq8lZhYzUz9UtiDNqSO9pX9_X-1';
 TRASH_FOLDER = "1EvJWH9jVwOTwNdusxirbkgOXXpdmAA69";
 
 ROOT_FOLDERS = [
-    "1hrL5JrApJpMVr2h7GnkiAFko7Rv60gVX"
-    //"1PznvZiHch_GaAqj8lGYawjCUMrbhNlgD", // "BDF SZINKRON MAPPA"
-    //"1powhwRx9j-DcJPjnXccEWmKF2rRu4bT1", // "Bodrogi Ferenc mappája"
-    //"12WZMaMtHajCzDNokQWJLs07oQdg0EXMB", // "MVM Optimum"
-    //"1tB0NltYDiPOzg39jLIhzgSj85BomoVr5", // "Medev Solar"
+    "1PznvZiHch_GaAqj8lGYawjCUMrbhNlgD", // "BDF SZINKRON MAPPA"
+    "1powhwRx9j-DcJPjnXccEWmKF2rRu4bT1", // "Bodrogi Ferenc mappája"
+    "12WZMaMtHajCzDNokQWJLs07oQdg0EXMB", // "MVM Optimum"
+    "1tB0NltYDiPOzg39jLIhzgSj85BomoVr5", // "Medev Solar"
 ];
 
 FILE_REGISTRY_ID = '1PfWaoRbbjPwWB9rcqHk6Fp7pQoWQjlDOWIz7HdU_4l0';
